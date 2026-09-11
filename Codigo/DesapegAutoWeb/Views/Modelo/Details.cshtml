@@ -1,0 +1,35 @@
+@model DesapegAutoWeb.Models.ModeloViewModel
+
+@{
+    ViewData["Title"] = "Detalhes do Modelo";
+}
+
+<div class="da-page">
+    <h1 class="da-title">Detalhes do Modelo</h1>
+
+    <div class="da-card da-card-pad">
+        <div class="da-detail-list">
+            <div class="da-detail-item">
+                <p class="da-detail-item-label">Nome</p>
+                <p class="da-detail-item-value">@Model.Nome</p>
+            </div>
+            <div class="da-detail-item">
+                <p class="da-detail-item-label">Marca</p>
+                <p class="da-detail-item-value">@(Model.NomeMarca ?? $"Marca #{Model.IdMarca}")</p>
+            </div>
+            <div class="da-detail-item">
+                <p class="da-detail-item-label">Categoria</p>
+                <p class="da-detail-item-value">@(Model.NomeCategoria ?? Model.Categoria ?? $"Categoria #{Model.IdCategoria}")</p>
+            </div>
+            <div class="da-detail-item">
+                <p class="da-detail-item-label">Versoes</p>
+                <p class="da-detail-item-value">@(string.IsNullOrWhiteSpace(Model.Versoes) ? "Nenhuma" : Model.Versoes)</p>
+            </div>
+        </div>
+
+        <div class="da-action-row">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="da-btn-primary">Editar</a>
+            <a asp-action="Index" class="da-btn-outline">Voltar</a>
+        </div>
+    </div>
+</div>

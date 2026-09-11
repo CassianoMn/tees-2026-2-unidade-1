@@ -1,0 +1,38 @@
+@model DesapegAutoWeb.Models.VersaoViewModel
+
+@{
+    ViewData["Title"] = "Nova Versao";
+}
+
+<div class="da-page">
+    <h1 class="da-title">Nova Versao</h1>
+
+    <div class="da-card da-card-pad">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="da-form-grid">
+                <div class="da-field">
+                    <label asp-for="Nome" class="da-label">Nome</label>
+                    <input asp-for="Nome" class="da-input" placeholder="Digite o nome da versao" />
+                    <span asp-validation-for="Nome" class="text-danger"></span>
+                </div>
+
+                <div class="da-field">
+                    <label asp-for="IdModelo" class="da-label">Modelo</label>
+                    <input asp-for="IdModelo" class="da-input" placeholder="ID do modelo" />
+                    <span asp-validation-for="IdModelo" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="da-action-row">
+                <button type="submit" class="da-btn da-btn-primary">Cadastrar</button>
+                <a asp-action="Index" class="da-btn da-btn-outline">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,62 @@
+@model IEnumerable<DesapegAutoWeb.Models.VeiculoViewModel>
+@using System.Globalization
+
+@{
+    ViewData["Title"] = "Veículos";
+}
+
+<div class="da-page">
+    <div class="da-top-actions">
+        <h1 class="da-title">Veículos</h1>
+        <a asp-action="Create" class="da-btn-primary">Novo Veículo</a>
+    </div>
+
+    <div class="da-card da-card-pad">
+        @if (!Model.Any())
+        {
+            <div class="da-empty">Nenhum veículo cadastrado.</div>
+        }
+        else
+        {
+            <div style="overflow-x: auto;">
+                <table class="da-table">
+                    <thead>
+                        <tr>
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <th>Ano</th>
+                            <th>Cor</th>
+                            <th>Placa</th>
+                            <th>Km</th>
+                            <th>Preço</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.NomeMarca</td>
+                                <td>@item.NomeModelo</td>
+                                <td>@item.Ano</td>
+                                <td>@item.Cor</td>
+                                <td>@item.Placa</td>
+                                <td>@item.Quilometragem.ToString("N0") km</td>
+                                <td>@item.Preco.ToString("C2", new CultureInfo("pt-BR"))</td>
+                                <td>@item.Status</td>
+                                <td>
+                                    <div class="da-table-actions">
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="da-action-edit">Editar</a>
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="da-action-view">Ver</a>
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="da-action-delete">Excluir</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

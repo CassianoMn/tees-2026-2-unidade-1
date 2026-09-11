@@ -1,0 +1,162 @@
+using Core;
+using Core.Service;
+using Core.Exceptions;
+using Core.Databases;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+
+namespace Service
+{
+    /// <summary>
+    /// Implementa os serviços de negócio para a entidade Pessoa.
+    /// </summary>
+    public class PessoaService : IPessoaService
+    {
+        private readonly IDesapegAutoContext context;
+
+        public PessoaService(IDesapegAutoContext context)
+        {
+            this.context = context;
+        }
+
+        /// <summary>
+        /// Cadastra uma nova pessoa no sistema.
+        /// </summary>
+        /// <param name="pessoa">Objeto pessoa com os dados para cadastro.</param>
+        /// <returns>O ID da pessoa cadastrada.</returns>
+        public int Create(Pessoa pessoa)
+        {
+            pessoa.Cpf = NormalizeDigits(pessoa.Cpf);
+            pessoa.Telefone = NormalizeDigits(pessoa.Telefone);
+
+            var pessoaExistente = context.Pessoas
+                .FirstOrDefault(p => p.Cpf.ToLower() == pessoa.Cpf.ToLower());
+
+            if (pessoaExistente != null)
+            {
+                throw new ServiceException("Erro: CPF já cadastrado no sistema.");
+            }
+
+            var emailExistente = context.Pessoas
+                .FirstOrDefault(p => p.Email.ToLower() == pessoa.Email.ToLower());
+
+            if (emailExistente != null)
+            {
+                throw new ServiceException("Erro: E-mail já cadastrado no sistema.");
+            }
+
+            context.Add(pessoa);
+            context.SaveChanges();
+            return pessoa.Id;
+        }
+
+        /// <summary>
+        /// Edita os dados de uma pessoa existente.
+        /// </summary>
+        /// <param name="pessoa">Objeto pessoa com os dados atualizados.</param>
+        public void Edit(Pessoa pessoa)
+        {
+            pessoa.Cpf = NormalizeDigits(pessoa.Cpf);
+            pessoa.Telefone = NormalizeDigits(pessoa.Telefone);
+
+            var pessoaExistente = context.Pessoas.Find(pessoa.Id);
+            if (pessoaExistente == null)
+            {
+                throw new ServiceException("Erro: Pessoa não encontrada. A operação foi cancelada.");
+            }
+
+            var cpfExistente = context.Pessoas
+                .FirstOrDefault(p => p.Id != pessoa.Id &&
+                                   p.Cpf.ToLower() == pessoa.Cpf.ToLower());
+            if (cpfExistente != null)
+            {
+                throw new ServiceException("Erro: CPF já cadastrado para outra pessoa.");
+            }
+
+            var emailExistente = context.Pessoas
+                .FirstOrDefault(p => p.Id != pessoa.Id &&
+                                   p.Email.ToLower() == pessoa.Email.ToLower());
+            if (emailExistente != null)
+            {
+                throw new ServiceException("Erro: E-mail já cadastrado para outra pessoa.");
+            }
+
+            pessoaExistente.Nome = pessoa.Nome;
+            pessoaExistente.Cpf = pessoa.Cpf;
+            pessoaExistente.Email = pessoa.Email;
+            pessoaExistente.Telefone = pessoa.Telefone;
+            context.SaveChanges();
+        }
+
+        /// <summary>
+        /// Remove uma pessoa do sistema.
+        /// </summary>
+        /// <param name="idPessoa">O ID da pessoa a ser removida.</param>
+        public void Delete(int idPessoa)
+        {
+            var pessoa = context.Pessoas.Find(idPessoa);
+            if (pessoa == null)
+            {
+                throw new ServiceException("Erro: Pessoa não encontrada. A operação foi cancelada.");
+            }
+
+            context.Remove(pessoa);
+            context.SaveChanges();
+        }
+
+        /// <summary>
+        /// Busca uma pessoa pelo seu ID.
+        /// </summary>
+        /// <param name="idPessoa">O ID da pessoa.</param>
+        /// <returns>A pessoa encontrada ou null se não existir.</returns>
+        public Pessoa? Get(int idPessoa)
+        {
+            return context.Pessoas.Find(idPessoa);
+        }
+
+        public Pessoa? GetByEmail(string email)
+        {
+            return context.Pessoas
+                .AsNoTracking()
+                .FirstOrDefault(p => p.Email.ToLower() == email.ToLower());
+        }
+
+        public Pessoa? GetByCpf(string cpf)
+        {
+            cpf = NormalizeDigits(cpf);
+            return context.Pessoas
+                .AsNoTracking()
+                .FirstOrDefault(p => p.Cpf.ToLower() == cpf.ToLower());
+        }
+
+        /// <summary>
+        /// Retorna uma lista com todas as pessoas cadastradas.
+        /// </summary>
+        /// <returns>Uma coleção de todas as pessoas.</returns>
+        public IEnumerable<Pessoa> GetAll()
+        {
+            return context.Pessoas.AsNoTracking();
+        }
+
+        /// <summary>
+        /// Busca pessoas pelo nome.
+        /// </summary>
+        /// <param name="nome">O nome a ser buscado.</param>
+        /// <returns>Uma coleção de pessoas que correspondem ao critério de busca.</returns>
+        public IEnumerable<Pessoa> GetByNome(string nome)
+        {
+            return context.Pessoas
+                .Where(p => p.Nome.ToLower().Contains(nome.ToLower()))
+                .AsNoTracking()
+                .ToList();
+        }
+
+        private static string NormalizeDigits(string? value)
+        {
+            return string.IsNullOrWhiteSpace(value)
+                ? string.Empty
+                : Regex.Replace(value, "[^0-9]", string.Empty);
+        }
+    }
+}

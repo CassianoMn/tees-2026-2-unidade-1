@@ -1,0 +1,50 @@
+@model DesapegAutoWeb.Models.VeiculoViewModel
+
+@{
+    ViewData["Title"] = "Excluir Veículo";
+}
+
+<div class="da-page">
+    <h1 class="da-title">Excluir Veículo</h1>
+
+    <div class="da-confirm-box">
+        <p>Tem certeza que deseja excluir este veículo? Esta ação não pode ser desfeita.</p>
+    </div>
+
+    <div class="da-card da-card-pad">
+        <div class="da-detail-list">
+            <div class="da-detail-item">
+                <p class="da-detail-item-label">Marca</p>
+                <p class="da-detail-item-value">@Model.NomeMarca</p>
+            </div>
+            <div class="da-detail-item">
+                <p class="da-detail-item-label">Modelo</p>
+                <p class="da-detail-item-value">@Model.NomeModelo</p>
+            </div>
+            <div class="da-detail-item">
+                <p class="da-detail-item-label">Ano</p>
+                <p class="da-detail-item-value">@Model.Ano</p>
+            </div>
+            <div class="da-detail-item">
+                <p class="da-detail-item-label">Cor</p>
+                <p class="da-detail-item-value">@Model.Cor</p>
+            </div>
+            <div class="da-detail-item">
+                <p class="da-detail-item-label">Placa</p>
+                <p class="da-detail-item-value">@Model.Placa</p>
+            </div>
+            <div class="da-detail-item">
+                <p class="da-detail-item-label">Preço</p>
+                <p class="da-detail-item-value">R$ @Model.Preco.ToString("N2")</p>
+            </div>
+        </div>
+
+        <form asp-action="Delete" asp-route-id="@Model.Id">
+            <input asp-for="Id" type="hidden" />
+            <div class="da-action-row">
+                <button type="submit" class="da-btn-danger">Excluir</button>
+                <a asp-action="Index" class="da-btn-outline">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>

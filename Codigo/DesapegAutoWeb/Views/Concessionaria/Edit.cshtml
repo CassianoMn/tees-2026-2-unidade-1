@@ -1,0 +1,69 @@
+@model DesapegAutoWeb.Models.ConcessionariaViewModel
+
+@{
+    ViewData["Title"] = "Editar Concessionária";
+    var selfEdit = ViewBag.SelfEdit as bool? == true;
+}
+
+<div class="da-page">
+    <h1 class="da-title">Editar Concessionária</h1>
+
+    <div class="da-card da-card-pad" style="max-width:560px;">
+        <form asp-action="@(selfEdit ? "MeuCadastro" : "Edit")">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="da-form-grid">
+                <div class="da-field">
+                    <label asp-for="Nome" class="da-label">Nome</label>
+                    <input asp-for="Nome" class="da-input" />
+                    <span asp-validation-for="Nome" class="text-danger"></span>
+                </div>
+                <div class="da-field">
+                    <label asp-for="Cnpj" class="da-label">CNPJ</label>
+                    <input asp-for="Cnpj" class="da-input" inputmode="numeric" maxlength="14" placeholder="Somente números" />
+                    <span asp-validation-for="Cnpj" class="text-danger"></span>
+                </div>
+                <div class="da-field">
+                    <label asp-for="Email" class="da-label">Email</label>
+                    <input asp-for="Email" class="da-input" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="da-field">
+                    <label asp-for="Telefone" class="da-label">Telefone</label>
+                    <input asp-for="Telefone" class="da-input" inputmode="numeric" maxlength="11" placeholder="Somente números" />
+                    <span asp-validation-for="Telefone" class="text-danger"></span>
+                </div>
+                <div class="da-field">
+                    <label asp-for="Senha" class="da-label">Senha</label>
+                    <input asp-for="Senha" class="da-input" type="password" />
+                    <span asp-validation-for="Senha" class="text-danger"></span>
+                </div>
+                <div class="da-field">
+                    <label asp-for="ConfirmarSenha" class="da-label">Confirmar Senha</label>
+                    <input asp-for="ConfirmarSenha" class="da-input" type="password" />
+                    <span asp-validation-for="ConfirmarSenha" class="text-danger"></span>
+                </div>
+                <div class="da-field">
+                    <label asp-for="Endereco" class="da-label">Endereço</label>
+                    <input asp-for="Endereco" class="da-input" />
+                    <span asp-validation-for="Endereco" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="da-action-row">
+                <button type="submit" class="da-btn da-btn-primary">Salvar</button>
+                @if (selfEdit)
+                {
+                    <a asp-controller="Anuncio" asp-action="Index" class="da-btn da-btn-outline">Voltar</a>
+                }
+                else
+                {
+                    <a asp-action="Index" class="da-btn da-btn-outline">Voltar</a>
+                }
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

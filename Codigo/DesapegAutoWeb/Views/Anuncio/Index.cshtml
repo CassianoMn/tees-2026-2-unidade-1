@@ -1,0 +1,75 @@
+﻿@model IEnumerable<DesapegAutoWeb.Models.AnuncioViewModel>
+@using System.Globalization
+@{
+    ViewData["Title"] = "Meus Anúncios";
+    var anuncios = Model?.ToList() ?? new List<DesapegAutoWeb.Models.AnuncioViewModel>();
+}
+
+<div class="da-page">
+    <div class="da-top-actions">
+        <h1 class="da-title">Meus Anúncios</h1>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+            <a asp-action="Create" class="da-btn da-btn-primary">Anunciar Veículo</a>
+            @if (User.IsInRole("Funcionario"))
+            {
+                <a asp-controller="Concessionaria" asp-action="MeuCadastro" class="da-btn da-btn-outline">Alterar dados</a>
+            }
+        </div>
+    </div>
+
+    @if (anuncios.Any())
+    {
+        foreach (var anuncio in anuncios)
+        {
+            var nomeVeiculo = $"{anuncio.Veiculo?.NomeMarca} {anuncio.Veiculo?.NomeModelo}".Trim();
+            if (string.IsNullOrWhiteSpace(nomeVeiculo))
+            {
+                nomeVeiculo = "Veículo";
+            }
+
+            <article class="da-anuncio-row">
+                <div class="da-anuncio-main">
+                    <div class="da-anuncio-photo">
+                        <div class="da-vehicle-placeholder">Imagem</div>
+                    </div>
+                    <div>
+                        <h2 class="da-subtitle">@nomeVeiculo</h2>
+                        <div class="da-anuncio-meta">
+                            <span class="da-vehicle-year">@anuncio.Veiculo?.Ano</span>
+                            @if (anuncio.Veiculo?.Quilometragem > 0)
+                            {
+                                <span class="da-muted">· @anuncio.Veiculo.Quilometragem.ToString("N0") km</span>
+                            }
+                            @if (anuncio.StatusAnuncio == "V")
+                            {
+                                <span class="da-badge da-badge-sold">Vendida</span>
+                            }
+                            else
+                            {
+                                <span class="da-badge da-badge-available">Disponível</span>
+                            }
+                        </div>
+                        <p class="da-vehicle-price">@((anuncio.Veiculo?.Preco ?? 0m).ToString("C0", new CultureInfo("pt-BR")))</p>
+                    </div>
+                </div>
+
+                <div class="da-anuncio-actions">
+                    @if (anuncio.StatusAnuncio != "V")
+                    {
+                        <a asp-controller="Veiculo" asp-action="Edit" asp-route-id="@anuncio.IdVeiculo" class="da-btn da-btn-outline">Editar anúncio</a>
+                        <a asp-controller="Venda" asp-action="Create" asp-route-idVeiculo="@anuncio.IdVeiculo" class="da-btn da-btn-primary">Vender</a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Veiculo" asp-action="Edit" asp-route-id="@anuncio.IdVeiculo" class="da-btn da-btn-outline">Ver detalhes</a>
+                        <a asp-action="Details" asp-route-id="@anuncio.Id" class="da-btn da-btn-soft">Ver anúncio</a>
+                    }
+                </div>
+            </article>
+        }
+    }
+    else
+    {
+        <div class="da-empty">Você ainda não possui anúncios cadastrados.</div>
+    }
+</div>

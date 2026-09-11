@@ -1,0 +1,23 @@
+@model DesapegAutoWeb.Models.MarcaViewModel
+
+@{
+    ViewData["Title"] = "Detalhes da Marca";
+}
+
+<div class="da-page">
+    <h1 class="da-title">Detalhes da Marca</h1>
+
+    <div class="da-card da-card-pad">
+        <div class="da-detail-list">
+            <div class="da-detail-item">
+                <p class="da-detail-item-label">Nome</p>
+                <p class="da-detail-item-value">@Model.Nome</p>
+            </div>
+        </div>
+
+        <div class="da-action-row">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="da-btn-primary">Editar</a>
+            <a asp-action="Index" class="da-btn-outline">Voltar</a>
+        </div>
+    </div>
+</div>

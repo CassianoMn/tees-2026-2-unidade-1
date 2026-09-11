@@ -1,0 +1,34 @@
+@model DesapegAutoWeb.Models.VersaoViewModel
+
+@{
+    ViewData["Title"] = "Excluir Versao";
+}
+
+<div class="da-page">
+    <h1 class="da-title">Excluir Versao</h1>
+
+    <div class="da-card da-card-pad">
+        <div class="da-confirm-box">
+            <p>Tem certeza que deseja excluir esta versao?</p>
+        </div>
+
+        <div class="da-detail-list">
+            <div class="da-detail-item">
+                <p class="da-detail-item-label">Nome</p>
+                <p class="da-detail-item-value">@Model.Nome</p>
+            </div>
+            <div class="da-detail-item">
+                <p class="da-detail-item-label">Modelo</p>
+                <p class="da-detail-item-value">@Model.IdModelo</p>
+            </div>
+        </div>
+
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="Id" />
+            <div class="da-action-row">
+                <button type="submit" class="da-btn da-btn-danger">Excluir</button>
+                <a asp-action="Index" class="da-btn da-btn-outline">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>

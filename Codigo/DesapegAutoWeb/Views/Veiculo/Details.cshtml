@@ -1,0 +1,52 @@
+@model DesapegAutoWeb.Models.VeiculoViewModel
+@using System.Globalization
+
+@{
+    ViewData["Title"] = "Detalhes do Veículo";
+}
+
+<div class="da-page">
+    <h1 class="da-title">Detalhes do Veículo</h1>
+
+    <div class="da-card da-card-pad">
+        <div class="da-detail-list">
+            <div class="da-detail-item">
+                <p class="da-detail-item-label">Marca</p>
+                <p class="da-detail-item-value">@Model.NomeMarca</p>
+            </div>
+            <div class="da-detail-item">
+                <p class="da-detail-item-label">Modelo</p>
+                <p class="da-detail-item-value">@Model.NomeModelo</p>
+            </div>
+            <div class="da-detail-item">
+                <p class="da-detail-item-label">Ano</p>
+                <p class="da-detail-item-value">@Model.Ano</p>
+            </div>
+            <div class="da-detail-item">
+                <p class="da-detail-item-label">Cor</p>
+                <p class="da-detail-item-value">@Model.Cor</p>
+            </div>
+            <div class="da-detail-item">
+                <p class="da-detail-item-label">Placa</p>
+                <p class="da-detail-item-value">@Model.Placa</p>
+            </div>
+            <div class="da-detail-item">
+                <p class="da-detail-item-label">Quilometragem</p>
+                <p class="da-detail-item-value">@Model.Quilometragem.ToString("N0") km</p>
+            </div>
+            <div class="da-detail-item">
+                <p class="da-detail-item-label">Preço</p>
+                <p class="da-detail-item-value">@Model.Preco.ToString("C2", new CultureInfo("pt-BR"))</p>
+            </div>
+            <div class="da-detail-item">
+                <p class="da-detail-item-label">Status</p>
+                <p class="da-detail-item-value">@Model.Status</p>
+            </div>
+        </div>
+
+        <div class="da-action-row">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="da-btn-primary">Editar</a>
+            <a asp-action="Index" class="da-btn-outline">Voltar</a>
+        </div>
+    </div>
+</div>

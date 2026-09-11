@@ -1,0 +1,60 @@
+@model DesapegAutoWeb.Models.ModeloViewModel
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@{
+    ViewData["Title"] = "Novo Modelo";
+    var marcas = ViewBag.Marcas as List<SelectListItem> ?? new List<SelectListItem>();
+    var categorias = ViewBag.Categorias as List<SelectListItem> ?? new List<SelectListItem>();
+}
+
+<div class="da-page">
+    <h1 class="da-title">Novo Modelo</h1>
+
+    <div class="da-card da-card-pad">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="da-form-grid">
+                <div class="da-field">
+                    <label asp-for="Nome" class="da-label">Nome do Modelo</label>
+                    <input asp-for="Nome" class="da-input" placeholder="Digite o nome do modelo" />
+                    <span asp-validation-for="Nome" class="text-danger"></span>
+                </div>
+                <div class="da-field">
+                    <label asp-for="IdMarca" class="da-label">Marca</label>
+                    <select asp-for="IdMarca" class="da-select">
+                        <option value="">Selecione a marca</option>
+                        @foreach (var marca in marcas)
+                        {
+                            <option value="@marca.Value">@marca.Text</option>
+                        }
+                    </select>
+                    <span asp-validation-for="IdMarca" class="text-danger"></span>
+                </div>
+                <div class="da-field">
+                    <label asp-for="IdCategoria" class="da-label">Categoria</label>
+                    <select asp-for="IdCategoria" class="da-select">
+                        <option value="">Selecione a categoria</option>
+                        @foreach (var categoria in categorias)
+                        {
+                            <option value="@categoria.Value">@categoria.Text</option>
+                        }
+                    </select>
+                    <span asp-validation-for="IdCategoria" class="text-danger"></span>
+                </div>
+                <div class="da-field">
+                    <label asp-for="Versoes" class="da-label">Versoes</label>
+                    <input asp-for="Versoes" class="da-input" placeholder="Separe por virgula. Ex.: GLI, XEi, Altis" />
+                    <span asp-validation-for="Versoes" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="da-action-row">
+                <button type="submit" class="da-btn-primary">Cadastrar</button>
+                <a asp-action="Index" class="da-btn-outline">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

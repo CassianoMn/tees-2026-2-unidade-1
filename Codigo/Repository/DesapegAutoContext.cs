@@ -1,0 +1,332 @@
+using System;
+using System.Collections.Generic;
+using Core;
+using Core.Databases;
+using Microsoft.EntityFrameworkCore;
+
+namespace Repository;
+
+/// <summary>
+/// Adaptador de persistência que conecta o Entity Framework Core e o banco de dados relacional (MySQL)
+/// à porta de persistência IDesapegAutoContext definida no domínio (Core).
+/// </summary>
+public partial class DesapegAutoContext : DbContext, IDesapegAutoContext
+{
+    public DesapegAutoContext()
+    {
+    }
+
+    public DesapegAutoContext(DbContextOptions<DesapegAutoContext> options)
+        : base(options)
+    {
+    }
+
+    public virtual DbSet<Anuncio> Anuncios { get; set; } = null!;
+
+    public virtual DbSet<Categoria> Categoria { get; set; } = null!;
+
+    public virtual DbSet<Concessionaria> Concessionaria { get; set; } = null!;
+
+    public virtual DbSet<Marca> Marcas { get; set; } = null!;
+
+    public virtual DbSet<Modelo> Modelos { get; set; } = null!;
+
+    public virtual DbSet<Pessoa> Pessoas { get; set; } = null!;
+
+    public virtual DbSet<Usuario> Usuarios { get; set; } = null!;
+
+    public virtual DbSet<Veiculo> Veiculos { get; set; } = null!;
+
+    public virtual DbSet<VeiculoHasVersao> VeiculoHasVersaos { get; set; } = null!;
+
+    public virtual DbSet<Venda> Venda { get; set; } = null!;
+
+    public virtual DbSet<Versao> Versaos { get; set; } = null!;
+
+    // Adaptadores para a porta IDesapegAutoContext
+    private IEntitySet<Anuncio>? _anunciosAdapter;
+    private IEntitySet<Categoria>? _categoriaAdapter;
+    private IEntitySet<Concessionaria>? _concessionariaAdapter;
+    private IEntitySet<Marca>? _marcasAdapter;
+    private IEntitySet<Modelo>? _modelosAdapter;
+    private IEntitySet<Pessoa>? _pessoasAdapter;
+    private IEntitySet<Usuario>? _usuariosAdapter;
+    private IEntitySet<Veiculo>? _veiculosAdapter;
+    private IEntitySet<VeiculoHasVersao>? _veiculoHasVersaosAdapter;
+    private IEntitySet<Venda>? _vendaAdapter;
+    private IEntitySet<Versao>? _versaosAdapter;
+
+    IEntitySet<Anuncio> IDesapegAutoContext.Anuncios => _anunciosAdapter ??= new EfEntitySet<Anuncio>(Anuncios);
+    IEntitySet<Categoria> IDesapegAutoContext.Categoria => _categoriaAdapter ??= new EfEntitySet<Categoria>(Categoria);
+    IEntitySet<Concessionaria> IDesapegAutoContext.Concessionaria => _concessionariaAdapter ??= new EfEntitySet<Concessionaria>(Concessionaria);
+    IEntitySet<Marca> IDesapegAutoContext.Marcas => _marcasAdapter ??= new EfEntitySet<Marca>(Marcas);
+    IEntitySet<Modelo> IDesapegAutoContext.Modelos => _modelosAdapter ??= new EfEntitySet<Modelo>(Modelos);
+    IEntitySet<Pessoa> IDesapegAutoContext.Pessoas => _pessoasAdapter ??= new EfEntitySet<Pessoa>(Pessoas);
+    IEntitySet<Usuario> IDesapegAutoContext.Usuarios => _usuariosAdapter ??= new EfEntitySet<Usuario>(Usuarios);
+    IEntitySet<Veiculo> IDesapegAutoContext.Veiculos => _veiculosAdapter ??= new EfEntitySet<Veiculo>(Veiculos);
+    IEntitySet<VeiculoHasVersao> IDesapegAutoContext.VeiculoHasVersaos => _veiculoHasVersaosAdapter ??= new EfEntitySet<VeiculoHasVersao>(VeiculoHasVersaos);
+    IEntitySet<Venda> IDesapegAutoContext.Venda => _vendaAdapter ??= new EfEntitySet<Venda>(Venda);
+    IEntitySet<Versao> IDesapegAutoContext.Versaos => _versaosAdapter ??= new EfEntitySet<Versao>(Versaos);
+
+    void IDesapegAutoContext.Add<TEntity>(TEntity entity) => base.Add(entity);
+    void IDesapegAutoContext.Update<TEntity>(TEntity entity) => base.Update(entity);
+    void IDesapegAutoContext.Remove<TEntity>(TEntity entity) => base.Remove(entity);
+    TEntity? IDesapegAutoContext.Find<TEntity>(params object?[]? keyValues) where TEntity : class => base.Find<TEntity>(keyValues);
+    int IDesapegAutoContext.SaveChanges() => base.SaveChanges();
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Anuncio>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("anuncio");
+
+            entity.HasIndex(e => e.IdVeiculo, "fk_anuncio_veiculo_idx");
+
+            entity.HasIndex(e => e.IdVenda, "fk_anuncio_venda1_idx");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.DataPublicacao)
+                .HasColumnType("timestamp")
+                .HasColumnName("dataPublicacao");
+            entity.Property(e => e.Descricao)
+                .HasMaxLength(50)
+                .HasColumnName("descricao");
+            entity.Property(e => e.IdVeiculo).HasColumnName("idVeiculo");
+            entity.Property(e => e.IdVenda).HasColumnName("idVenda");
+            entity.Property(e => e.Interacoes).HasColumnName("interacoes");
+            entity.Property(e => e.Opcionais)
+                .HasMaxLength(255)
+                .HasColumnName("opcionais");
+            entity.Property(e => e.StatusAnuncio)
+                .HasMaxLength(20)
+                .HasColumnName("statusAnuncio");
+            entity.Property(e => e.Visualizacoes).HasColumnName("visualizacoes");
+        });
+
+        modelBuilder.Entity<Categoria>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("categoria");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Nome)
+                .HasMaxLength(50)
+                .HasColumnName("nome");
+        });
+
+        modelBuilder.Entity<Concessionaria>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("concessionaria");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Cnpj)
+                .HasMaxLength(14)
+                .HasColumnName("cnpj");
+            entity.Property(e => e.Email)
+                .HasMaxLength(50)
+                .HasColumnName("email");
+            entity.Property(e => e.Endereco)
+                .HasMaxLength(80)
+                .HasColumnName("endereco");
+            entity.Property(e => e.Nome)
+                .HasMaxLength(50)
+                .HasColumnName("nome");
+            entity.Property(e => e.Senha)
+                .HasMaxLength(20)
+                .HasColumnName("senha");
+            entity.Property(e => e.Telefone)
+                .HasMaxLength(11)
+                .HasColumnName("telefone");
+        });
+
+        modelBuilder.Entity<Marca>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("marca");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Nome)
+                .HasMaxLength(50)
+                .HasColumnName("nome");
+        });
+
+        modelBuilder.Entity<Modelo>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("modelo");
+
+            entity.HasIndex(e => e.IdCategoria, "fk_modelo_categoria1_idx");
+
+            entity.HasIndex(e => e.IdMarca, "fk_modelo_marca1_idx");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Categoria)
+                .HasMaxLength(50)
+                .HasColumnName("categoria");
+            entity.Property(e => e.IdCategoria).HasColumnName("idCategoria");
+            entity.Property(e => e.IdMarca).HasColumnName("idMarca");
+            entity.Property(e => e.Nome)
+                .HasMaxLength(50)
+                .HasColumnName("nome");
+            entity.Property(e => e.Versoes)
+                .HasMaxLength(100)
+                .HasColumnName("versoes");
+
+            entity.HasOne<Categoria>()
+                .WithMany()
+                .HasForeignKey(e => e.IdCategoria)
+                .OnDelete(DeleteBehavior.Restrict)
+                .HasConstraintName("fk_modelo_categoria1");
+
+            entity.HasOne(e => e.IdMarcaNavigation)
+                .WithMany()
+                .HasForeignKey(e => e.IdMarca)
+                .OnDelete(DeleteBehavior.Restrict)
+                .HasConstraintName("fk_modelo_marca1");
+        });
+
+        modelBuilder.Entity<Pessoa>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("pessoa");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Cpf)
+                .HasMaxLength(11)
+                .HasColumnName("cpf");
+            entity.Property(e => e.Email)
+                .HasMaxLength(50)
+                .HasColumnName("email");
+            entity.Property(e => e.Nome)
+                .HasMaxLength(50)
+                .HasColumnName("nome");
+            entity.Property(e => e.Telefone)
+                .HasMaxLength(11)
+                .HasColumnName("telefone");
+        });
+
+        modelBuilder.Entity<Usuario>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("usuario");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Cpf)
+                .HasMaxLength(11)
+                .HasColumnName("cpf");
+            entity.Property(e => e.Email)
+                .HasMaxLength(50)
+                .HasColumnName("email");
+            entity.Property(e => e.Nome)
+                .HasMaxLength(50)
+                .HasColumnName("nome");
+            entity.Property(e => e.Senha)
+                .HasMaxLength(20)
+                .HasColumnName("senha");
+            entity.Property(e => e.Telefone)
+                .HasMaxLength(11)
+                .HasColumnName("telefone");
+        });
+
+        modelBuilder.Entity<Veiculo>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("veiculo");
+
+            entity.HasIndex(e => e.IdConcessionaria, "fk_veiculo_concessionaria_idx");
+
+            entity.HasIndex(e => e.IdMarca, "fk_veiculo_marca1_idx");
+
+            entity.HasIndex(e => e.IdModelo, "fk_veiculo_modelo_idx");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Ano).HasColumnName("ano");
+            entity.Property(e => e.Cor)
+                .HasMaxLength(45)
+                .HasColumnName("cor");
+            entity.Property(e => e.IdConcessionaria).HasColumnName("idConcessionaria");
+            entity.Property(e => e.IdMarca).HasColumnName("idMarca");
+            entity.Property(e => e.IdModelo).HasColumnName("idModelo");
+            entity.Property(e => e.Placa)
+                .HasMaxLength(7)
+                .HasColumnName("placa");
+            entity.Property(e => e.Preco)
+                .HasPrecision(10)
+                .HasColumnName("preco");
+            entity.Property(e => e.Quilometragem).HasColumnName("quilometragem");
+        });
+
+        modelBuilder.Entity<VeiculoHasVersao>(entity =>
+        {
+            entity.HasKey(e => new { e.IdVeiculo, e.IdVersao }).HasName("PRIMARY");
+
+            entity.ToTable("veiculo_has_versao");
+
+            entity.HasIndex(e => e.IdVeiculo, "fk_veiculo_has_versao_veiculo1_idx");
+
+            entity.HasIndex(e => e.IdVersao, "fk_veiculo_has_versao_versao1_idx");
+
+            entity.Property(e => e.IdVeiculo).HasColumnName("idVeiculo");
+            entity.Property(e => e.IdVersao).HasColumnName("idVersao");
+        });
+
+        modelBuilder.Entity<Venda>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("venda");
+
+            entity.HasIndex(e => e.IdConcessionaria, "fk_venda_concessionaria1_idx");
+
+            entity.HasIndex(e => e.IdPessoa, "fk_venda_pessoa1_idx");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.DataVenda)
+                .HasColumnType("date")
+                .HasColumnName("dataVenda");
+            entity.Property(e => e.FormaPagamento)
+                .HasMaxLength(45)
+                .HasColumnName("formaPagamento");
+            entity.Property(e => e.IdConcessionaria).HasColumnName("idConcessionaria");
+            entity.Property(e => e.IdPessoa).HasColumnName("idPessoa");
+            entity.Property(e => e.ValorFinal)
+                .HasPrecision(10)
+                .HasColumnName("valorFinal");
+        });
+
+        modelBuilder.Entity<Versao>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("versao");
+
+            entity.HasIndex(e => e.IdModelo, "fk_versao_modelo1_idx");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.IdModelo).HasColumnName("idModelo");
+            entity.Property(e => e.Nome)
+                .HasMaxLength(50)
+                .HasColumnName("nome");
+
+            entity.HasOne(e => e.IdModeloNavigation)
+                .WithMany(m => m.Versaos)
+                .HasForeignKey(e => e.IdModelo)
+                .OnDelete(DeleteBehavior.Restrict)
+                .HasConstraintName("fk_versao_modelo1");
+        });
+
+        OnModelCreatingPartial(modelBuilder);
+    }
+
+    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+}

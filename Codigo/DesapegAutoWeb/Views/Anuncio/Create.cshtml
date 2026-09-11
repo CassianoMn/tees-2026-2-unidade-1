@@ -1,0 +1,134 @@
+﻿@model DesapegAutoWeb.Models.AnuncioCreateViewModel
+@{
+    ViewData["Title"] = "Anunciar Veículo";
+}
+
+<div class="da-page">
+    <h1 class="da-title">Anunciar Veículo</h1>
+
+    <section class="da-card da-card-pad">
+        <form asp-action="Create" method="post" class="da-stack">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="da-grid-2">
+                @if (Model.IdConcessionaria > 0)
+                {
+                    <div class="da-field">
+                        <label class="da-label">Concessionaria</label>
+                        <input class="da-input" value="@ViewBag.ConcessionariaNome" readonly />
+                        <input type="hidden" asp-for="IdConcessionaria" />
+                    </div>
+                }
+                else
+                {
+                    <div class="da-field">
+                        <label asp-for="IdConcessionaria" class="da-label">Concessionaria</label>
+                        <select asp-for="IdConcessionaria" asp-items="ViewBag.Concessionarias" class="da-select">
+                            <option value="">Selecione a concessionaria</option>
+                        </select>
+                        <span asp-validation-for="IdConcessionaria" class="text-danger"></span>
+                    </div>
+                }
+
+                <div class="da-field">
+                    <label asp-for="IdMarca" class="da-label">Marca</label>
+                    <select asp-for="IdMarca" asp-items="ViewBag.Marcas" class="da-select">
+                        <option value="">Selecione a marca</option>
+                    </select>
+                    <span asp-validation-for="IdMarca" class="text-danger"></span>
+                </div>
+
+                <div class="da-field">
+                    <label asp-for="IdModelo" class="da-label">Modelo</label>
+                    <select asp-for="IdModelo" asp-items="ViewBag.Modelos" class="da-select">
+                        <option value="">Selecione o modelo</option>
+                    </select>
+                    <span asp-validation-for="IdModelo" class="text-danger"></span>
+                </div>
+
+                <div class="da-field">
+                    <label asp-for="Cor" class="da-label">Cor</label>
+                    <select class="da-select" asp-for="Cor">
+                        <option value="">Selecione a cor</option>
+                        <option>Branco</option>
+                        <option>Preto</option>
+                        <option>Prata</option>
+                        <option>Cinza</option>
+                        <option>Vermelho</option>
+                        <option>Azul</option>
+                    </select>
+                    <span asp-validation-for="Cor" class="text-danger"></span>
+                </div>
+
+                <div class="da-field">
+                    <label class="da-label" for="Ano">Ano</label>
+                    <input type="text"
+                           inputmode="numeric"
+                           maxlength="4"
+                           class="da-input ano-field"
+                           id="Ano"
+                           name="Ano"
+                           value="@(Model.Ano > 0 ? Model.Ano.ToString() : "")"
+                           placeholder="Ex: 2024"
+                           autocomplete="off" />
+                    <small id="ano-error-msg" class="text-danger" style="font-size:0.82rem;display:none;"></small>
+                    <span asp-validation-for="Ano" class="text-danger"></span>
+                </div>
+
+                <div class="da-field">
+                    <label asp-for="Quilometragem" class="da-label">Quilometragem</label>
+                    <input type="number" class="da-input" asp-for="Quilometragem" placeholder="Quilometragem" />
+                    <span asp-validation-for="Quilometragem" class="text-danger"></span>
+                </div>
+
+                <div class="da-field">
+                    <label class="da-label" for="Preco">Preco</label>
+                    <input type="text"
+                           inputmode="decimal"
+                           class="da-input preco-field"
+                           id="Preco"
+                           name="Preco"
+                           value="@(Model.Preco > 0 ? Model.Preco.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture).Replace(".", ",") : "")"
+                           placeholder="Ex: 50000,00"
+                           autocomplete="off" />
+                    <span asp-validation-for="Preco" class="text-danger"></span>
+                </div>
+
+                <div class="da-field">
+                    <label asp-for="Placa" class="da-label">Placa</label>
+                    <input class="da-input" asp-for="Placa" placeholder="Placa" />
+                    <span asp-validation-for="Placa" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="da-field">
+                <label asp-for="Descricao" class="da-label">Descrição</label>
+                <textarea asp-for="Descricao" class="da-textarea" placeholder="Descreva o veículo"></textarea>
+                <span asp-validation-for="Descricao" class="text-danger"></span>
+            </div>
+
+            <div class="da-field">
+                <p class="da-label">Opcionais</p>
+                <div class="da-checkbox-grid">
+                    <label class="da-check-item"><input type="checkbox" name="OpcionaisSelecionados" value="Ar condicionado" />Ar condicionado</label>
+                    <label class="da-check-item"><input type="checkbox" name="OpcionaisSelecionados" value="Direcao hidraulica" />Direcao hidraulica</label>
+                    <label class="da-check-item"><input type="checkbox" name="OpcionaisSelecionados" value="Vidros eletricos" />Vidros eletricos</label>
+                    <label class="da-check-item"><input type="checkbox" name="OpcionaisSelecionados" value="Travas eletricas" />Travas eletricas</label>
+                    <label class="da-check-item"><input type="checkbox" name="OpcionaisSelecionados" value="Airbag" />Airbag</label>
+                    <label class="da-check-item"><input type="checkbox" name="OpcionaisSelecionados" value="Freios ABS" />Freios ABS</label>
+                    <label class="da-check-item"><input type="checkbox" name="OpcionaisSelecionados" value="Central multimidia" />Central multimidia</label>
+                    <label class="da-check-item"><input type="checkbox" name="OpcionaisSelecionados" value="Camera de re" />Camera de re</label>
+                </div>
+            </div>
+
+            <div class="da-top-actions" style="margin-bottom:0;">
+                <a asp-action="Index" class="da-btn da-btn-outline">Cancelar</a>
+                <button type="submit" class="da-btn da-btn-primary">Anunciar veículo</button>
+            </div>
+        </form>
+    </section>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

@@ -1,0 +1,49 @@
+@model DesapegAutoWeb.Models.VendaViewModel
+
+@{
+    ViewData["Title"] = "Excluir Venda";
+}
+
+<div class="da-page">
+    <h1 class="da-title">Excluir Venda</h1>
+
+    <div class="da-confirm-box">
+        <p>Tem certeza que deseja excluir esta venda? Esta acao nao pode ser desfeita.</p>
+    </div>
+
+    <div class="da-card da-card-pad">
+        <div class="da-detail-list">
+            <div class="da-detail-item">
+                <p class="da-detail-item-label">Id</p>
+                <p class="da-detail-item-value">@Model.Id</p>
+            </div>
+            <div class="da-detail-item">
+                <p class="da-detail-item-label">Data da Venda</p>
+                <p class="da-detail-item-value">@Model.DataVenda.ToString("dd/MM/yyyy")</p>
+            </div>
+            <div class="da-detail-item">
+                <p class="da-detail-item-label">Valor Final</p>
+                <p class="da-detail-item-value">R$ @Model.ValorFinal.ToString("N2")</p>
+            </div>
+            <div class="da-detail-item">
+                <p class="da-detail-item-label">Forma de Pagamento</p>
+                <p class="da-detail-item-value">@Model.FormaPagamento</p>
+            </div>
+            <div class="da-detail-item">
+                <p class="da-detail-item-label">Concessionaria</p>
+                <p class="da-detail-item-value">@Model.IdConcessionaria</p>
+            </div>
+            <div class="da-detail-item">
+                <p class="da-detail-item-label">Pessoa (Comprador)</p>
+                <p class="da-detail-item-value">@Model.IdPessoa</p>
+            </div>
+        </div>
+
+        <form asp-action="Delete">
+            <div class="da-action-row">
+                <button type="submit" class="da-btn-danger">Excluir</button>
+                <a asp-action="Index" class="da-btn-outline">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,37 @@
+@model DesapegAutoWeb.Models.PessoaViewModel
+
+@{
+    ViewData["Title"] = "Excluir Pessoa";
+}
+
+<div class="da-page">
+    <h1 class="da-title">Excluir Pessoa</h1>
+
+    <div class="da-confirm-box">
+        <p>Tem certeza que deseja excluir esta pessoa? Esta ação não pode ser desfeita.</p>
+    </div>
+
+    <div class="da-card da-card-pad">
+        <div class="da-detail-list">
+            <div class="da-detail-item">
+                <p class="da-detail-item-label">Nome</p>
+                <p class="da-detail-item-value">@Model.Nome</p>
+            </div>
+            <div class="da-detail-item">
+                <p class="da-detail-item-label">CPF</p>
+                <p class="da-detail-item-value">@Model.Cpf</p>
+            </div>
+            <div class="da-detail-item">
+                <p class="da-detail-item-label">Email</p>
+                <p class="da-detail-item-value">@Model.Email</p>
+            </div>
+        </div>
+
+        <form asp-action="Delete">
+            <div class="da-action-row">
+                <button type="submit" class="da-btn-danger">Excluir</button>
+                <a asp-action="Index" class="da-btn-outline">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>

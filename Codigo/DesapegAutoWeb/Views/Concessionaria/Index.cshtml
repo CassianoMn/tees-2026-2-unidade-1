@@ -1,0 +1,147 @@
+@model IEnumerable<DesapegAutoWeb.Models.ConcessionariaViewModel>
+@{
+    ViewData["Title"] = "Administracao de Concessionarias";
+    var concessionarias = Model?.ToList() ?? new List<DesapegAutoWeb.Models.ConcessionariaViewModel>();
+    var formData = ViewBag.FormData as DesapegAutoWeb.Models.ConcessionariaViewModel;
+}
+
+<div class="da-page">
+    @if (TempData["SuccessMessage"] is string successMessage)
+    {
+        <div class="da-toast-banner da-toast-banner--success" role="alert">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            @successMessage
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] is string errorMessage)
+    {
+        <div class="da-toast-banner da-toast-banner--error" role="alert">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            @errorMessage
+        </div>
+    }
+
+    <nav class="da-admin-tabs" aria-label="Navegação admin">
+        <a asp-controller="Marca" asp-action="Index" class="da-admin-tab">Marcas</a>
+        <a asp-controller="Categoria" asp-action="Index" class="da-admin-tab">Categorias</a>
+        <a asp-controller="Modelo" asp-action="Index" class="da-admin-tab">Modelos</a>
+        <a asp-controller="Concessionaria" asp-action="Index" class="da-admin-tab da-admin-tab--active">Concessionárias</a>
+    </nav>
+
+    <div class="da-admin-layout">
+        <section class="da-card da-card-pad">
+            <h2 class="da-subtitle">Cadastrar Concessionaria</h2>
+
+            <form asp-action="Create" method="post" class="da-stack">
+                <div class="da-field">
+                    <label class="da-label" for="Nome">Nome da Concessionaria *</label>
+                    <input class="da-input @(ViewData.ModelState[nameof(DesapegAutoWeb.Models.ConcessionariaViewModel.Nome)]?.Errors.Count > 0 ? "input-validation-error" : "")" id="Nome" name="Nome" value="@(formData?.Nome ?? string.Empty)" required />
+                    <span class="text-danger">@Html.ValidationMessage("Nome")</span>
+                </div>
+
+                <div class="da-field">
+                    <label class="da-label" for="Cnpj">CNPJ *</label>
+                    <input class="da-input @(ViewData.ModelState[nameof(DesapegAutoWeb.Models.ConcessionariaViewModel.Cnpj)]?.Errors.Count > 0 ? "input-validation-error" : "")" id="Cnpj" name="Cnpj" value="@(formData?.Cnpj ?? string.Empty)" placeholder="Somente números" inputmode="numeric" maxlength="14" required />
+                    <span class="text-danger">@Html.ValidationMessage("Cnpj")</span>
+                </div>
+
+                <div class="da-field">
+                    <label class="da-label" for="Email">E-mail *</label>
+                    <input type="email" class="da-input @(ViewData.ModelState[nameof(DesapegAutoWeb.Models.ConcessionariaViewModel.Email)]?.Errors.Count > 0 ? "input-validation-error" : "")" id="Email" name="Email" value="@(formData?.Email ?? string.Empty)" required />
+                    <span class="text-danger">@Html.ValidationMessage("Email")</span>
+                </div>
+
+                <div class="da-field">
+                    <label class="da-label" for="Telefone">Telefone *</label>
+                    <input class="da-input @(ViewData.ModelState[nameof(DesapegAutoWeb.Models.ConcessionariaViewModel.Telefone)]?.Errors.Count > 0 ? "input-validation-error" : "")" id="Telefone" name="Telefone" value="@(formData?.Telefone ?? string.Empty)" placeholder="Somente números" inputmode="numeric" maxlength="11" required />
+                    <span class="text-danger">@Html.ValidationMessage("Telefone")</span>
+                </div>
+
+                <div class="da-field">
+                    <label class="da-label" for="Endereco">Endereco *</label>
+                    <textarea class="da-textarea @(ViewData.ModelState[nameof(DesapegAutoWeb.Models.ConcessionariaViewModel.Endereco)]?.Errors.Count > 0 ? "input-validation-error" : "")" id="Endereco" name="Endereco" required>@(formData?.Endereco ?? string.Empty)</textarea>
+                    <span class="text-danger">@Html.ValidationMessage("Endereco")</span>
+                </div>
+
+                <div class="da-field">
+                    <label class="da-label" for="Senha">Senha *</label>
+                    <input type="password" class="da-input @(ViewData.ModelState[nameof(DesapegAutoWeb.Models.ConcessionariaViewModel.Senha)]?.Errors.Count > 0 ? "input-validation-error" : "")" id="Senha" name="Senha" maxlength="20" minlength="6" pattern="(?=.*[A-Za-z])(?=.*\d).{6,20}" title="A senha deve conter entre 6 e 20 caracteres, com ao menos uma letra e um numero." required />
+                    <small class="text-muted">Entre 6 e 20 caracteres, com ao menos uma letra e um numero.</small>
+                    <span class="text-danger">@Html.ValidationMessage("Senha")</span>
+                </div>
+
+                <div class="da-field">
+                    <label class="da-label" for="ConfirmarSenha">Confirmar senha *</label>
+                    <input type="password" class="da-input @(ViewData.ModelState[nameof(DesapegAutoWeb.Models.ConcessionariaViewModel.ConfirmarSenha)]?.Errors.Count > 0 ? "input-validation-error" : "")" id="ConfirmarSenha" name="ConfirmarSenha" required />
+                    <span class="text-danger">@Html.ValidationMessage("ConfirmarSenha")</span>
+                </div>
+
+                <button type="submit" class="da-btn da-btn-primary da-btn-wide">Cadastrar Concessionaria</button>
+            </form>
+        </section>
+
+        <section class="da-card da-card-pad">
+            <h2 class="da-subtitle">
+                Concessionarias Cadastradas
+                <span class="da-count-badge">@concessionarias.Count</span>
+            </h2>
+
+            @if (concessionarias.Any())
+            {
+                <div class="da-table-wrap">
+                    <table class="da-table">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>CNPJ</th>
+                                <th>Telefone</th>
+                                <th>E-mail</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in concessionarias)
+                            {
+                                <tr>
+                                    <td>
+                                        <span>@item.Nome</span>
+                                        @if (!string.IsNullOrWhiteSpace(item.Endereco))
+                                        {
+                                            <br /><small style="color:var(--da-muted)">@item.Endereco</small>
+                                        }
+                                    </td>
+                                     <td>@item.Cnpj</td>
+                                     <td>@item.Telefone</td>
+                                    <td>@item.Email</td>
+                                    <td class="da-table-actions">
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="da-action-edit" title="Editar">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                            Editar
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="da-action-delete" title="Remover">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+                                            Remover
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="da-empty-state">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    <p class="da-empty-state__title">Nenhuma concessionaria cadastrada</p>
+                    <p class="da-empty-state__desc">Cadastre a primeira concessionaria usando o formulário ao lado.</p>
+                </div>
+            }
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

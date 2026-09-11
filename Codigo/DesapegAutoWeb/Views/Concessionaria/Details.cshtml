@@ -1,0 +1,39 @@
+@model DesapegAutoWeb.Models.ConcessionariaViewModel
+
+@{
+    ViewData["Title"] = "Detalhes da Concessionária";
+}
+
+<div class="da-page">
+    <h1 class="da-title">Detalhes da Concessionária</h1>
+
+    <div class="da-card da-card-pad">
+        <div class="da-detail-list">
+            <div class="da-detail-item">
+                <p class="da-detail-item-label">Nome</p>
+                <p class="da-detail-item-value">@Model.Nome</p>
+            </div>
+            <div class="da-detail-item">
+                <p class="da-detail-item-label">CNPJ</p>
+                <p class="da-detail-item-value">@Model.Cnpj</p>
+            </div>
+            <div class="da-detail-item">
+                <p class="da-detail-item-label">Email</p>
+                <p class="da-detail-item-value">@Model.Email</p>
+            </div>
+            <div class="da-detail-item">
+                <p class="da-detail-item-label">Telefone</p>
+                <p class="da-detail-item-value">@Model.Telefone</p>
+            </div>
+            <div class="da-detail-item">
+                <p class="da-detail-item-label">Endereço</p>
+                <p class="da-detail-item-value">@Model.Endereco</p>
+            </div>
+        </div>
+
+        <div class="da-action-row">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="da-btn-primary">Editar</a>
+            <a asp-action="Index" class="da-btn-outline">Voltar</a>
+        </div>
+    </div>
+</div>

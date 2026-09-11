@@ -1,0 +1,90 @@
+@model DesapegAutoWeb.Models.VeiculoViewModel
+@{
+    ViewData["Title"] = "Editar Anúncio";
+}
+
+<div class="da-page">
+    <h1 class="da-title">Editar Anúncio</h1>
+
+    <section class="da-card da-card-pad">
+        <form asp-action="Edit" asp-route-id="@Model.Id" method="post" class="da-stack">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input asp-for="Id" type="hidden" />
+            <input asp-for="IdConcessionaria" type="hidden" />
+            <input asp-for="IdModelo" type="hidden" />
+            <input asp-for="IdMarca" type="hidden" />
+            <input asp-for="Status" type="hidden" />
+            <input asp-for="NomeMarca" type="hidden" />
+            <input asp-for="NomeModelo" type="hidden" />
+
+            <div class="da-grid-2">
+                <div class="da-field">
+                    <label class="da-label">Cor</label>
+                    <select asp-for="Cor" class="da-select">
+                        <option value="">Selecione a cor</option>
+                        <option>Branco</option>
+                        <option>Preto</option>
+                        <option>Prata</option>
+                        <option>Cinza</option>
+                        <option>Vermelho</option>
+                        <option>Azul</option>
+                    </select>
+                    <span asp-validation-for="Cor" class="text-danger"></span>
+                </div>
+
+                <div class="da-field">
+                    <label class="da-label" for="Ano">Ano</label>
+                    <input type="text"
+                           inputmode="numeric"
+                           maxlength="4"
+                           class="da-input ano-field"
+                           id="Ano"
+                           name="Ano"
+                           value="@(Model.Ano > 0 ? Model.Ano.ToString() : "")"
+                           placeholder="Ex: 2024"
+                           autocomplete="off" />
+                    <small id="ano-error-msg" class="text-danger" style="font-size:0.82rem;display:none;"></small>
+                    <span asp-validation-for="Ano" class="text-danger"></span>
+                </div>
+
+                <div class="da-field">
+                    <label class="da-label" for="Quilometragem">Quilometragem</label>
+                    <input type="number" class="da-input" asp-for="Quilometragem" placeholder="Quilometragem" min="0" />
+                    <span asp-validation-for="Quilometragem" class="text-danger"></span>
+                </div>
+
+                <div class="da-field">
+                    <label class="da-label" for="Preco">Preço</label>
+                    <input type="text"
+                           inputmode="decimal"
+                           class="da-input preco-field"
+                           id="Preco"
+                           name="Preco"
+                           value="@(Model.Preco > 0 ? Model.Preco.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture).Replace(".", ",") : "")"
+                           placeholder="Ex: 50000,00"
+                           autocomplete="off" />
+                    <span asp-validation-for="Preco" class="text-danger"></span>
+                </div>
+
+                <div class="da-field">
+                    <label asp-for="Placa" class="da-label">Placa</label>
+                    <input class="da-input" asp-for="Placa" placeholder="Ex: ABC1D23" maxlength="7" />
+                    <span asp-validation-for="Placa" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="da-top-actions" style="margin-bottom:0;">
+                <a asp-controller="Veiculo" asp-action="Delete" asp-route-id="@Model.Id" class="da-btn da-btn-danger">Excluir anúncio</a>
+                <div style="display:flex;gap:.5rem;">
+                    <a asp-controller="Anuncio" asp-action="Index" class="da-btn da-btn-outline">Cancelar</a>
+                    <button type="submit" class="da-btn da-btn-primary">Salvar alterações</button>
+                </div>
+            </div>
+        </form>
+    </section>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
