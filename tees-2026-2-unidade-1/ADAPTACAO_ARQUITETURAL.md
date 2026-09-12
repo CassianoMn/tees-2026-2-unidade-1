@@ -1,7 +1,5 @@
 # Relatório de Adaptação Arquitetural: Aplicação da Clean Architecture (Arquitetura Limpa) no DesapegAuto
 
-**Atividade:** Adaptação arquitetural · em grupo · 1,0 ponto  
-**Objetivo:** Aplicar a regra de dependência de Clean, Hexagonal ou Onion sobre um sistema que já existe, fazendo o domínio parar de depender do banco de dados.  
 **Arquitetura Escolhida:** **Clean Architecture (Arquitetura Limpa - Robert C. Martin / Uncle Bob)**  
 **Branch de Entrega:** `Branch_CleanArchitecture`  
 **Repositório:** [DesapegAuto_Porters-and-Adapters](https://github.com/CassianoMn/DesapegAuto_Porters-and-Adapters)
