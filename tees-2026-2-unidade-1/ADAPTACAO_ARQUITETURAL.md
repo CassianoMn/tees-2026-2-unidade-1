@@ -1,11 +1,5 @@
 # Relatório de Adaptação Arquitetural: Aplicação da Arquitetura Hexagonal (Ports & Adapters) no DesapegAuto
 
-**Atividade:** Adaptação arquitetural · em grupo · 1,0 ponto  
-**Objetivo:** Aplicar a regra de dependência de Clean, Hexagonal ou Onion sobre um sistema existente, fazendo o domínio parar de depender do banco de dados.  
-**Repositório Alvo:** [DesapegAuto_Porters-and-Adapters](https://github.com/CassianoMn/DesapegAuto_Porters-and-Adapters)
-
----
-
 ## 1. Documentação da Arquitetura Atual
 
 ### 1.1 Estilo Externo (Conceitos do Encontro 01)
