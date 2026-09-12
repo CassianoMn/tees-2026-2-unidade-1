@@ -10,7 +10,7 @@ namespace Repository;
 /// Adaptador de persistência que conecta o Entity Framework Core e o banco de dados relacional (MySQL)
 /// à porta de persistência IDesapegAutoContext definida no domínio (Core).
 /// </summary>
-public partial class DesapegAutoContext : DbContext, IDesapegAutoContext
+public partial class DesapegAutoContext : DbContext, IDesapegAutoContext, IDesapegAutoGateway
 {
     public DesapegAutoContext()
     {
