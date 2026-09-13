@@ -247,14 +247,3 @@ namespace Service
   - Maior granularidade de projetos e arquivos, exigindo gerenciamento cuidadoso de referências de projetos e injeção de dependências.
 
 ---
-
-## 6. Quadro Resumo dos 5 Critérios de Avaliação
-
-| Critério de Avaliação | Peso | Arquitetura Original | Arquitetura Hexagonal (`main`) | Clean Architecture (`Branch_CleanArchitecture`) |
-| :--- | :---: | :---: | :---: | :---: |
-| **Sentido das dependências e inversão (DIP)** | **3,5** | 0,0 | **3,5** (Portas abstratas no domínio e adaptadores externos) | **3,5** (Dependency Rule com Data Gateway de Uncle Bob) |
-| **Isolamento da regra de negócio** | **2,5** | 0,5 | **2,5** (Domínio purificado com 0 dependências de ORM/SQL) | **2,5** (Domínio e Aplicação 100% desacoplados de persistência) |
-| **Separação de responsabilidades (SoC)** | **2,0** | 0,5 | **2,0** (Divisão nítida: Núcleo, Driving/Driven Ports e Adapters) | **2,0** (Divisão canônica: Domain, Application, Infrastructure) |
-| **Documentação e justificativa** | **1,5** | 0,0 | **1,5** (Relatório completo com diagramas BCE, estilos e decisões) | **1,5** (Relatório completo com diagramas dos círculos e matriz) |
-| **Testes existentes passando** | **0,5** | 0,5 | **0,5** (151 testes executados e 100% aprovados) | **0,5** (151 testes executados e 100% aprovados) |
-| **NOTA TOTAL ESTIMADA** | **10,0** | 1,5 | **10,0** | **10,0** |
