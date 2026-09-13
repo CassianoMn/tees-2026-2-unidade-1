@@ -4,6 +4,7 @@ Este repositório contém a implementação da **Arquitetura Hexagonal (Ports & 
 
 - **Branch Ativa / Entrega:** [`main`](https://github.com/CassianoMn/DesapegAuto_Porters-and-Adapters/tree/main)
 - **Relatório Completo de Arquitetura:** Consulte o documento detalhado em [tees-2026-2-unidade-1/README.md](tees-2026-2-unidade-1/README.md).
+- **Quadro Comparativo das 3 Arquiteturas:** Consulte [tees-2026-2-unidade-1/COMPARATIVO_ARQUITETURAS.md](tees-2026-2-unidade-1/COMPARATIVO_ARQUITETURAS.md) para a análise comparativa entre as arquiteturas Original, Hexagonal e Clean.
 
 ## Estrutura Canônica das Pastas (Ports & Adapters)
 

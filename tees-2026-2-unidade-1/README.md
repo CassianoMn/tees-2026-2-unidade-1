@@ -2,7 +2,8 @@
 
 **Arquitetura Escolhida:** **Arquitetura Hexagonal (Ports and Adapters - Alistair Cockburn)**  
 **Branch de Entrega:** `main`  
-**Repositório:** [DesapegAuto_Porters-and-Adapters](https://github.com/CassianoMn/DesapegAuto_Porters-and-Adapters)
+**Repositório:** [DesapegAuto_Porters-and-Adapters](https://github.com/CassianoMn/DesapegAuto_Porters-and-Adapters)  
+**Documento Comparativo:** Veja [COMPARATIVO_ARQUITETURAS.md](COMPARATIVO_ARQUITETURAS.md) para a comparação detalhada entre a Arquitetura Original, Hexagonal e Clean.
 
 ---
 
