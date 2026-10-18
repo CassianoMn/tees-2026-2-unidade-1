@@ -1,0 +1,17 @@
+{
+  "name": "exercicio-2-protocolos-rede-social",
+  "version": "1.0.0",
+  "description": "Atividade 02 - APIs e Protocolos (REST/JSON vs GraphQL) expondo o domínio de uma Rede Social",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "start:rest": "node rest-json/server.js",
+    "start:graphql": "node graphql/server.js",
+    "test": "node test/verify-all.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "graphql": "^16.10.0"
+  }
+}
